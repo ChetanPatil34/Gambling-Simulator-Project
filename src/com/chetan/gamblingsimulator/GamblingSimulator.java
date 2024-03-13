@@ -5,7 +5,7 @@ public class GamblingSimulator {
 	
 	private static final int EVERY_DAY_STAKE = 100;
 	private static final int PER_GAME_STAKE = 1;
-	//private static final int MONTH_DAYS = 20;
+	private static final int MONTH_DAYS = 20;
 	
 	private static final int WIN = 1;
 	private static final int LOOSE = 0;
@@ -15,6 +15,13 @@ public class GamblingSimulator {
 	private static final int[] winAmount = new int[20];
 	private static final int[] looseAmount = new int[20];
 	
+	private static final int[] maxWin = new int[MONTH_DAYS];
+	private static final int[] maxLoose = new int[MONTH_DAYS];
+ 	
+	static int maxWon = 0;
+	static int maxloss = 0;
+	static int indexwin = 0;
+	static int indexLoose = 0;
 	private static int total_Win_day = 0;
 	private static int total_Loose_day = 0;
 	
@@ -62,14 +69,38 @@ public class GamblingSimulator {
 		{
 			total_Win_day += 1;
 			
+			if(loosestack < winstack)
+			{
+				maxWin[i] = winstack - loosestack;
+				
+				if(maxWon < maxLoose[i])
+				{
+					maxWon = maxLoose[i];
+					indexwin =  i+1;
+					
+				}
+				
+			}
+			
+			
 			break;
 		}
 		if(loosestack == EVERY_DAY_STAKE/2)
 		{
 			total_Loose_day += 1;
 			
+			if(maxloss < loosestack)
+			{
+				maxLoose[i] = loosestack - winstack;
+				if(maxloss < maxLoose[i])
+				{
+					maxloss = maxLoose[i];
+					indexLoose = i+1;
+				}
+			}
+			  
 			break;
-		}
+		
 		
 	}  
 		winAmount[i] = winstack;
@@ -81,13 +112,16 @@ public class GamblingSimulator {
 		
 		}
 		System.out.println("Total win Day Month = " + total_Win_day );
+		System.out.println(indexwin + "is the Lukiest Day, Won Rs : "+maxWon);
 		System.out.println("Total Loose Day Month = " + total_Loose_day );
+		System.out.println(indexLoose +"is the Unluckiest Day, Lost Rs : "+maxloss);
+	}
 	}
 
 	public static void main(String[] args) {
 		
 		System.out.println("Well Come to Gambling Simulator Project");
-		gameStatus();
+		
 		playgame();
 		
 	
